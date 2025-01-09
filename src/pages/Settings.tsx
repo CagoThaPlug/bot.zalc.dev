@@ -71,7 +71,7 @@ const Settings: React.FC<SettingsProps> = ({ user, setUser }) => {
     };
 
     try {
-      const response = await fetch(`http://zalc.dev/botSettings/${user.id}`, {
+      const response = await fetch(`https://zalc.dev/botSettings/${user.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...user.botSettings, ...updatedSettings }),

@@ -27,11 +27,11 @@ export default function GlobalCommands() {
       let endpoint = '';
       if (searchType === 'command') {
         endpoint = searchTerm 
-          ? `http://zalc.dev/commands/global?search=${encodeURIComponent(searchTerm)}`
-          : 'http://zalc.dev/commands/global';
+          ? `https://zalc.dev/commands/global?search=${encodeURIComponent(searchTerm)}`
+          : 'https://zalc.dev/commands/global';
       } else {
         if (!searchTerm) return; // Don't fetch if no username provided
-        endpoint = `http://zalc.dev/commands/user/${encodeURIComponent(searchTerm)}`;
+        endpoint = `https://zalc.dev/commands/user/${encodeURIComponent(searchTerm)}`;
       }
       
       const response = await fetch(endpoint);

@@ -39,7 +39,7 @@ export default function Announcements({ user, setUser }: AnnouncementProps) {
     const updatedAnnouncements = [...announcements, newAnnouncement];
 
     try {
-      const response = await fetch(`http://zalc.dev/botSettings/${user.id}/chatReminders`, {
+      const response = await fetch(`https://zalc.dev/botSettings/${user.id}/chatReminders`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedAnnouncements),
@@ -75,7 +75,7 @@ export default function Announcements({ user, setUser }: AnnouncementProps) {
     );
 
     try {
-      const response = await fetch(`http://zalc.dev/botSettings/${user.id}/chatReminders`, {
+      const response = await fetch(`https://zalc.dev/botSettings/${user.id}/chatReminders`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedAnnouncements),
@@ -119,7 +119,7 @@ export default function Announcements({ user, setUser }: AnnouncementProps) {
     if (!user) return;
 
     try {
-      const response = await fetch(`http://zalc.dev/botSettings/${user.id}/chatReminders`, {
+      const response = await fetch(`https://zalc.dev/botSettings/${user.id}/chatReminders`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(announcements),

@@ -57,7 +57,7 @@ const HiscoresDashboard = () => {
   const fetchData = async (filter: TimeFilter) => {
     try {
       setIsLoading(true);
-      const response = await fetch(`http://zalc.dev/dabData?filter=${encodeURIComponent(filter)}`);
+      const response = await fetch(`https://zalc.dev/dabData?filter=${encodeURIComponent(filter)}`);
       const data = await response.json();
       setChannels(data.channels);
       
@@ -92,7 +92,7 @@ const HiscoresDashboard = () => {
       ]);
 
       // Fetch recent activity data
-      const activityResponse = await fetch('http://zalc.dev/dabs/recentactivity');
+      const activityResponse = await fetch('https://zalc.dev/dabs/recentactivity');
       const activityData = await activityResponse.json();
       
       // Convert array of activities to our expected format

@@ -17,7 +17,7 @@ export function AuthCallback() {
         isVerifying.current = true;
 
         try {
-          const response = await fetch('http://zalc.dev/twitch/verify', {
+          const response = await fetch('https://zalc.dev/twitch/verify', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

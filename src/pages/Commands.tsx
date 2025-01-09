@@ -62,7 +62,7 @@ export default function Commands({ user, setUser }: CommandsProps) {
       setIsLoading(true);
       const updatedCommands = [...customCommands, newCommand];
       
-      const response = await fetch(`http://zalc.dev/botSettings/${user.id}/commands`, {
+      const response = await fetch(`https://zalc.dev/botSettings/${user.id}/commands`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedCommands),
@@ -104,7 +104,7 @@ export default function Commands({ user, setUser }: CommandsProps) {
         cmd.name === editingCommand.name ? editingCommand : cmd
       );
 
-      const response = await fetch(`http://zalc.dev/botSettings/${user.id}/commands`, {
+      const response = await fetch(`https://zalc.dev/botSettings/${user.id}/commands`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedCommands),
@@ -166,7 +166,7 @@ export default function Commands({ user, setUser }: CommandsProps) {
     if (!user) return;
 
     try {
-      const response = await fetch(`http://zalc.dev/botSettings/${user.id}/globalCommands`, {
+      const response = await fetch(`https://zalc.dev/botSettings/${user.id}/globalCommands`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...user.botSettings, globalCommands }),
@@ -201,7 +201,7 @@ export default function Commands({ user, setUser }: CommandsProps) {
     if (!user) return;
 
     try {
-      const response = await fetch(`http://zalc.dev/botSettings/${user.id}/commands`, {
+      const response = await fetch(`https://zalc.dev/botSettings/${user.id}/commands`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(customCommands),
