@@ -163,7 +163,7 @@ export function Dashboard() {
         },        
         {
           label: "Unique Chatters",
-          value: data.uniqueChatters.toString(),
+          value: data.uniqueChatters,
           icon: Users,
           color: "bg-purple-500",
           description:
