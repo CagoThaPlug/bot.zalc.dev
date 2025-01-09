@@ -61,7 +61,7 @@ export function Login() {
       <div className="w-full max-w-md">
         <div className="bg-white p-8 rounded-lg shadow-xl">
           <div className="text-center mb-8">
-            <img src="/icon.png" alt="ZalcBot" className="w-16 h-16 mx-auto mb-4" />
+            <img src="https://zalc.dev/images/icon.png" alt="ZalcBot" className="w-16 h-16 mx-auto mb-4" />
             <h1 className="text-2xl font-bold text-gray-900">Welcome to ZalcBot</h1>
             <p className="text-gray-600 mt-2">Your favorite streamer's favorite Twitch bot</p>
           </div>
