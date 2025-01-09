@@ -103,7 +103,7 @@ export function Dashboard() {
     const fetchStats = async () => {
       if (!user) return;
       const response = await fetch(
-        `http://localhost:8080/stats?channelID=${user.twitchUser.id}`
+        `http://zalc.dev/stats?channelID=${user.twitchUser.id}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch stats");
@@ -174,7 +174,7 @@ export function Dashboard() {
     };
 
     const fetchUpdates = async () => {
-      const response = await fetch(`http://localhost:8080/updates`);
+      const response = await fetch(`http://zalc.dev/updates`);
       const data = await response.json();
       setUpdates(data);
     };
@@ -185,7 +185,7 @@ export function Dashboard() {
 
   useEffect(() => {
     const fetchFeaturedStreamer = async () => {
-      const response = await fetch(`http://localhost:8080/featuredStreamer`);
+      const response = await fetch(`http://zalc.dev/featuredStreamer`);
       if (response.ok) {
         const streamerName = await response.text();
         setFeaturedStreamer(streamerName);

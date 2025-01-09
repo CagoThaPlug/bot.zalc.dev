@@ -56,7 +56,7 @@ export default function Spotify({ user }: SpotifyProps) {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch(`http://localhost:8080/spotify/settings?userId=${user?.twitchUser.id}`);
+        const response = await fetch(`http://zalc.dev/spotify/settings?userId=${user?.twitchUser.id}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -77,7 +77,7 @@ export default function Spotify({ user }: SpotifyProps) {
 
   const connectSpotify = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/spotify/connect?userId=${user?.twitchUser.id}`, {
+      const response = await fetch(`http://zalc.dev/spotify/connect?userId=${user?.twitchUser.id}`, {
         method: 'POST'
       });
       if (!response.ok) {
@@ -104,7 +104,7 @@ export default function Spotify({ user }: SpotifyProps) {
 
   const disconnectSpotify = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/spotify/disconnect?userId=${user?.twitchUser.id}`, {
+      const response = await fetch(`http://zalc.dev/spotify/disconnect?userId=${user?.twitchUser.id}`, {
         method: 'POST'
       });
 
@@ -131,7 +131,7 @@ export default function Spotify({ user }: SpotifyProps) {
         [key]: value
       };
   
-      const response = await fetch(`http://localhost:8080/spotify/settings/update?userId=${user?.twitchUser.id}`, {
+      const response = await fetch(`http://zalc.dev/spotify/settings/update?userId=${user?.twitchUser.id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -179,7 +179,7 @@ export default function Spotify({ user }: SpotifyProps) {
     try {
       const userString = localStorage.getItem('user');
       const user: DatabaseUser | null = userString ? JSON.parse(userString) : null;
-      const response = await fetch(`http://localhost:8080/spotify/token?code=${code}&userId=${user?.twitchUser?.id}`, {
+      const response = await fetch(`http://zalc.dev/spotify/token?code=${code}&userId=${user?.twitchUser?.id}`, {
         method: 'POST',
       });
 

@@ -35,7 +35,7 @@ export function Login() {
   
 
   const handleContactSubmit = async () => {
-    const response = await fetch('http://localhost:8080/contact', {
+    const response = await fetch('http://zalc.dev/contact', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
