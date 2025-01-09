@@ -37,7 +37,7 @@ const Sidebar = () => {
       <div className="p-4">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold flex items-center gap-2">
-            <img src="/icon.png" alt="ZalcBot" className="w-8 h-8" />
+            <img src="https://zalc.dev/images/icon.png" alt="ZalcBot" className="w-8 h-8" />
             ZalcBot
           </h1>
           <button
