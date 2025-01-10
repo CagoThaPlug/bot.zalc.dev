@@ -3,6 +3,13 @@ import { Discord } from '../components/icons/Discord';
 import { initiateLogin } from '../lib/auth';
 import { useState, useEffect } from 'react';
 
+interface Stats {
+  totalUsers: number;
+  totalChatSents: number;
+  totalCommandsUsed: number;
+  uptime: string;
+}
+
 export function Login() {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [loginError, setLoginError] = useState<string | null>(null);
@@ -12,6 +19,8 @@ export function Login() {
   const [contactReason, setContactReason] = useState('');
   const [description, setDescription] = useState('');
   const [discordContact, setDiscordContact] = useState('');
+  const [stats, setStats] = useState<Stats | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const error = localStorage.getItem('loginError');
@@ -31,6 +40,23 @@ export function Login() {
       setLoginError(error);
       localStorage.removeItem('loginError');
     }
+
+    // Fetch global stats
+    const fetchStats = async () => {
+      try {
+        const response = await fetch('https://zalc.dev/publicStats');
+        if (response.ok) {
+          const data = await response.json();
+          setStats(data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch stats:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchStats();
   }, []);
   
 
@@ -57,8 +83,35 @@ export function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 relative">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-gray-900 flex flex-col items-center">
+      {/* Global Stats Header */}
+      <header className="bg-gray-800 text-white w-full py-2 fixed top-0 shadow-md">
+        <div className="container mx-auto flex justify-center items-center px-4">
+          {isLoading ? (
+            <span className="text-sm text-gray-400">Loading stats...</span>
+          ) : stats ? (
+            <div className="flex gap-8">
+              <div className="text-center">
+                <p className="text-lg font-bold">{stats.totalUsers?.toLocaleString() || '0'}</p>
+                <p className="text-xs text-gray-400">Total Users</p>
+              </div>
+              <div className="text-center">
+                <p className="text-lg font-bold">{stats.totalChatSents?.toLocaleString() || '0'}</p>
+                <p className="text-xs text-gray-400">Messages</p>
+              </div>
+              <div className="text-center">
+                <p className="text-lg font-bold">{stats.totalCommandsUsed?.toLocaleString() || '0'}</p>
+                <p className="text-xs text-gray-400">Commands Used</p>
+              </div>
+            </div>
+          ) : (
+            <span className="text-sm text-gray-400">Unable to load stats</span>
+          )}
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <div className="w-full max-w-md mt-24">
         <div className="bg-white p-8 rounded-lg shadow-xl">
           <div className="text-center mb-8">
             <img src="https://zalc.dev/images/icon.png" alt="ZalcBot" className="w-16 h-16 mx-auto mb-4" />
@@ -67,7 +120,7 @@ export function Login() {
           </div>
 
           {loginError && (
-            <div className="bg-red-100 text-red-700 p-3 rounded mb-4">
+            <div className="bg-red-100 text-red-700 p-3 roundedrounded mb-4">
               {loginError}
             </div>
           )}
