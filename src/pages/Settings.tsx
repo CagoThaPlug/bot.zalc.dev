@@ -49,16 +49,31 @@ const Settings: React.FC<SettingsProps> = ({ user, setUser }) => {
     }
   }, [user]);
 
-  const handleToggle = (id: string) => {
+  const handleToggle = async (id: string) => {
     if (id === 'autoMod' && !user?.channelMod) {
       setNotification('You need to mod the bot in your channel to enable Auto Moderation.');
       return;
     }
 
-    setSettings(prev => prev.map(setting =>
+    const updatedSettings = settings.map(setting =>
       setting.id === id ? { ...setting, enabled: !setting.enabled } : setting
-    ));
+    );
+
+    setSettings(updatedSettings);
     setHasChanges(true);
+
+    if (id === 'zalcBotEnabled' && !updatedSettings.find(s => s.id === 'zalcBotEnabled')?.enabled) {
+      try {
+        const response = await fetch(`https://zalc.dev/twitch/leaveroom?userName=${user?.twitchUser.display_name}`, {
+          method: 'POST',
+        });
+        if (!response.ok) {
+          console.error('Failed to leave chat room');
+        }
+      } catch (error) {
+        console.error('Error leaving chat room:', error);
+      }
+    }
   };
 
   const handleSave = async () => {
