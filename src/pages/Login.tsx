@@ -6,7 +6,7 @@ export function Login() {
     { name: "Tyyyer32", url: "https://twitch.tv/Tyyyer32" },
     { name: "SauceeNinja", url: "https://twitch.tv/SauceeNinja" },
     { name: "Squanchooo", url: "https://twitch.tv/Squanchooo" },
-    { name: "ek1lla", url: "https://twitch.tv/Ek1lla" },
+    { name: "eki11a", url: "https://twitch.tv/eki11a" },
     { name: "painy_wainy", url: "https://twitch.tv/painy_wainy" },
     { name: "TomatoPencil", url: "https://twitch.tv/TomatoPencil" },
     { name: "Zumms", url: "https://twitch.tv/Zumms" },
