@@ -1,250 +1,100 @@
-import { Droplet, List, User, MessageCircle } from 'lucide-react';
-import { Discord } from '../components/icons/Discord';
-import { initiateLogin } from '../lib/auth';
-import { useState, useEffect } from 'react';
-
-interface Stats {
-  totalUsers: number;
-  totalChatSents: number;
-  totalCommandsUsed: number;
-  uptime: string;
-}
+import React from 'react';
 
 export function Login() {
-  const [isCollapsed, setIsCollapsed] = useState(true);
-  const [loginError, setLoginError] = useState<string | null>(null);
-  const [logoutSuccess, setLogoutSuccess] = useState<string | null>(null);
-  const [userExists, setUserExists] = useState<boolean>(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [contactReason, setContactReason] = useState('');
-  const [description, setDescription] = useState('');
-  const [discordContact, setDiscordContact] = useState('');
-  const [stats, setStats] = useState<Stats | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const error = localStorage.getItem('loginError');
-    const logoutSuccess = localStorage.getItem('logoutSuccess');
-    const userExists = localStorage.getItem('user');
-
-    if (userExists) {
-      setUserExists(true);
-    }
-
-    if (logoutSuccess) {
-      setLogoutSuccess(logoutSuccess);
-      localStorage.removeItem('logoutSuccess');
-    }
-
-    if (error) {
-      setLoginError(error);
-      localStorage.removeItem('loginError');
-    }
-
-    // Fetch global stats
-    const fetchStats = async () => {
-      try {
-        const response = await fetch('https://zalc.dev/publicStats');
-        if (response.ok) {
-          const data = await response.json();
-          setStats(data);
-        }
-      } catch (error) {
-        console.error('Failed to fetch stats:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchStats();
-  }, []);
-  
-
-  const handleContactSubmit = async () => {
-    const response = await fetch('https://zalc.dev/contact', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ contactReason, description, discordContact }),
-    });
-
-    if (response.ok) {
-      alert('Contact form submitted successfully!');
-    } else {
-      alert('Failed to submit contact form. Please try again later.');
-    }
-
-    // Clear the form fields and close the modal
-    setDiscordContact('');
-    setContactReason('');
-    setDescription('');
-    setIsModalOpen(false);
-  };
+  // Special thanks list with Twitch usernames and display names
+  const specialThanks = [
+    { name: "Tyyyer32", url: "https://twitch.tv/Tyyyer32" },
+    { name: "SauceeNinja", url: "https://twitch.tv/SauceeNinja" },
+    { name: "Squanchooo", url: "https://twitch.tv/Squanchooo" },
+    { name: "eki11a", url: "https://twitch.tv/eki11a" },
+    { name: "painy_wainy", url: "https://twitch.tv/painy_wainy" },
+    { name: "TomatoPencil", url: "https://twitch.tv/TomatoPencil" },
+    { name: "Zumms", url: "https://twitch.tv/Zumms" },
+    { name: "TotalHomeGrown", url: "https://twitch.tv/TotalHomeGrown" },
+    { name: "NinjaHomeGrown", url: "https://twitch.tv/NinjaHomeGrown" }
+  ];
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col items-center">
-      {/* Global Stats Header */}
-      <header className="bg-gray-800 text-white w-full py-2 fixed top-0 shadow-md">
-        <div className="container mx-auto flex justify-center items-center px-4">
-          {isLoading ? (
-            <span className="text-sm text-gray-400">Loading stats...</span>
-          ) : stats ? (
-            <div className="flex gap-8">
-              <div className="text-center">
-                <p className="text-lg font-bold">{stats.totalUsers?.toLocaleString() || '0'}</p>
-                <p className="text-xs text-gray-400">Total Users</p>
-              </div>
-              <div className="text-center">
-                <p className="text-lg font-bold">{stats.totalChatSents?.toLocaleString() || '0'}</p>
-                <p className="text-xs text-gray-400">Messages</p>
-              </div>
-              <div className="text-center">
-                <p className="text-lg font-bold">{stats.totalCommandsUsed?.toLocaleString() || '0'}</p>
-                <p className="text-xs text-gray-400">Commands Used</p>
-              </div>
-            </div>
-          ) : (
-            <span className="text-sm text-gray-400">Unable to load stats</span>
-          )}
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <div className="w-full max-w-md mt-24">
-        <div className="bg-white p-8 rounded-lg shadow-xl">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 flex flex-col items-center justify-center py-8">
+      <div className="w-full max-w-2xl px-4">
+        <div className="bg-white/95 backdrop-blur-sm p-8 rounded-xl shadow-2xl border border-white/20">
           <div className="text-center mb-8">
-            <img src="https://zalc.dev/images/icon.png" alt="ZalcBot" className="w-16 h-16 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-gray-900">Welcome to ZalcBot</h1>
-            <p className="text-gray-600 mt-2">Your favorite streamer's favorite Twitch bot</p>
+            <div className="relative">
+              <img src="https://i.imgur.com/iCoE9TK.png" alt="ZalcBot" className="w-20 h-20 mx-auto mb-4 rounded-full shadow-lg" />
+              <div className="absolute -top-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white animate-pulse"></div>
+            </div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">ZalcBot</h1>
+            <div className="inline-block bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium">
+              Coming Back Soon
+            </div>
           </div>
 
-          {loginError && (
-            <div className="bg-red-100 text-red-700 p-3 roundedrounded mb-4">
-              {loginError}
+          {/* Main Message */}
+          <div className="prose text-gray-700 max-w-none">
+            <p className="text-lg mb-4 text-center font-medium text-gray-800">We're working on something amazing! 🚀</p>
+            
+            <p className="mb-4">I've been working on ZalcBot 2.0 and its turning out way better than I thought it would. Taking that break was exactly what I needed because it gave me time to think about what this could actually become.</p>
+            
+            <p className="mb-4">I'm having fun coding again instead of just forcing myself to work on stuff. Got some really cool ideas that I think you guys are gonna love.</p>
+            
+            <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg border-l-4 border-purple-500 mb-6">
+              <h3 className="text-lg font-semibold mb-2 text-purple-800">What I'm working on:</h3>
+              <ul className="text-sm text-gray-700 space-y-1">
+                <li>Better moderation tools</li>
+                <li>Features you guys have been asking for</li>
+                <li>File hosting so you can upload overlays and alerts</li>
+                <li>Spotify stuff</li>
+                <li>A board where you can see what I'm working on and report bugs</li>
+              </ul>
             </div>
-          )}
-
-          {logoutSuccess && (
-            <div className="bg-green-100 text-green-700 p-3 rounded mb-4">
-              {logoutSuccess}
-            </div>
-          )}
-
-          {userExists && (
-            <div className="bg-blue-100 text-blue-700 p-3 rounded mb-4 flex items-center justify-between">
-              <div className="flex items-center">
-                <p className="text-center text-lg">There is currently a bug when logging in, please try logging in again or refreshing this page to access the dashboard. My apologies for the inconvenience.</p>
+            
+            {/* Special Thanks Section */}
+            <div className="my-6 p-6 bg-gray-50 rounded-xl border border-gray-200">
+              <h3 className="text-lg font-semibold mb-3 text-center">Continued Thanks To Our Amazing Community</h3>
+              <p className="mb-4 text-center text-gray-600">These incredible streamers continue to inspire and support the ZalcBot journey:</p>
+              <div className="flex flex-wrap gap-2 justify-center">
+                {specialThanks.map((streamer, index) => (
+                  <a 
+                    key={index}
+                    href={streamer.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block bg-gradient-to-r from-purple-100 to-blue-100 text-purple-800 px-4 py-2 rounded-full hover:from-purple-200 hover:to-blue-200 transition-all duration-200 transform hover:scale-105 shadow-sm"
+                  >
+                    {streamer.name}
+                  </a>
+                ))}
               </div>
             </div>
-          )}
-
-          <button
-            onClick={initiateLogin}
-            className="w-full bg-purple-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-purple-700 transition-colors flex items-center justify-center gap-2"
-          >
-            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z" />
-            </svg>
-            Login with Twitch
-          </button>
-
-          <div className="text-center mt-4">
-            <a href="/donate" className="text-purple-600 hover:underline">Support ZalcBot Here</a>
+            
+            <div className="text-center bg-gradient-to-r from-green-50 to-blue-50 p-6 rounded-xl border border-green-200 mb-6">
+              <p className="text-lg font-medium text-gray-800 mb-2">Want to stay updated?</p>
+              <p className="text-gray-600 mb-4">Join the Discord to chat with everyone and get updates when they happen.</p>
+              <a 
+                href="https://discord.gg/j4rKuabWdA" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700 transition-colors"
+              >
+                Join Discord
+              </a>
+            </div>
+            
+            <p className="text-center text-gray-600 mb-2">Thanks for sticking around and being patient with me.</p>
+            <p className="text-center font-medium text-gray-800">- Zalc</p>
           </div>
         </div>
-
-        <div
-          className={`mt-2 bg-gray-100 rounded-lg shadow-lg p-4 transition-all duration-300 ${isCollapsed ? 'h-16 overflow-hidden' : 'h-auto'}`}
-        >
-          <button
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className="w-full bg-gray-300 text-gray-800 py-1 px-4 rounded-lg hover:bg-gray-400 mb-2 text-sm"
-          >
-            {isCollapsed ? 'Show Options' : 'Hide Options'}
-          </button>
-
-          {!isCollapsed && (
-            <div className="flex flex-col space-y-2">
-              <button
-                onClick={() => window.location.href = '/smoke'}
-                className="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 flex items-center gap-2"
-              >
-                <Droplet className="w-5 h-5" />
-                Dab Highscores
-              </button>
-
-              <button
-                onClick={() => window.location.href = '/globalcommands'}
-                className="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 flex items-center gap-2"
-              >
-                <List className="w-5 h-5" />
-                Commands
-              </button>
-
-              <button
-                onClick={() => window.open('https://totalhomegrown.com/', '_blank')}
-                className="bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 text-white py-2 px-4 rounded-lg hover:opacity-90 flex items-center gap-2"
-              >
-                <User className="w-5 h-5" />
-                THG Family
-              </button>
-
-              {/* Updated Discord Button */}
-              <button
-                onClick={() => window.open('https://discord.gg/j4rKuabWdA', '_blank')}
-                className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center gap-2"
-                aria-label="Join our Discord"
-              >
-                <Discord className="w-5 h-5" />
-                Discord
-              </button>
-
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 flex items-center gap-2"
-              >
-                <MessageCircle className="w-5 h-5" />
-                Contact
-              </button>
-            </div>
-          )}
-        </div>
-
-        {isModalOpen && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <h2 className="text-lg font-bold mb-4">Contact Us</h2>
-              <input
-                type="text"
-                placeholder="Discord Username"
-                value={discordContact}
-                onChange={(e) => setDiscordContact(e.target.value)}
-                className="border p-2 mb-4 w-full"
-              />
-              <input
-                type="text"
-                placeholder="Reason"
-                value={contactReason}
-                onChange={(e) => setContactReason(e.target.value)}
-                className="border p-2 mb-4 w-full"
-              />
-              <textarea
-                placeholder="Description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="border p-2 mb-4 w-full"
-              />
-              <button onClick={handleContactSubmit} className="bg-blue-500 text-white py-2 px-4 rounded-lg">
-                Submit
-              </button>
-              <button onClick={() => setIsModalOpen(false)} className="bg-red-500 text-white py-2 px-4 rounded-lg ml-2">
-                Cancel
-              </button>
-            </div>
-          </div>
-        )}
+      </div>
+      
+      {/* Floating particles animation */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-purple-400 rounded-full opacity-20 animate-bounce" style={{animationDelay: '0s'}}></div>
+        <div className="absolute top-1/3 right-1/4 w-1 h-1 bg-blue-400 rounded-full opacity-30 animate-bounce" style={{animationDelay: '1s'}}></div>
+        <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-purple-300 rounded-full opacity-15 animate-bounce" style={{animationDelay: '2s'}}></div>
+        <div className="absolute bottom-1/3 right-1/3 w-2 h-2 bg-blue-300 rounded-full opacity-25 animate-bounce" style={{animationDelay: '1.5s'}}></div>
       </div>
     </div>
   );
 }
+
+export default Login;
